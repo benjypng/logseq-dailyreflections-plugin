@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "effect": "false",
   "logseq": {
-    "id": "_k0suva15mts",
-    "title": "logseq-dailyreflections-plugin-ts"
+    "id": "logseq-dailyreflections-plugin",
+    "title": "logseq-dailyreflections-plugin"
   },
   "main": "dist/index.html",
   "targets": {
@@ -28,11 +28,10 @@
     "build": "parcel build --no-source-maps index.html --public-url ./"
   },
   "dependencies": {
-    "@logseq/libs": "0.0.1-alpha.29"
+    "@logseq/libs": "latest"
   },
   "devDependencies": {
-    "parcel": "^2.0.0",
-    "eslint": "^6.1.3",
-    "typescript": "^4.4.4"
+    "parcel": "latest",
+    "typescript": "latest"
   }
 }
