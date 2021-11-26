@@ -1,7 +1,7 @@
 import '@logseq/libs';
 
 const main = async () => {
-  console.log('Plugin loaded');
+  console.log('Creighton Daily Reflections Plugin loaded');
 
   // Function to insert Creighton Block, and edit block after
   const insertCreighton = async (targetBlock: any, currentPage: object) => {
@@ -22,10 +22,14 @@ const main = async () => {
       );
 
       // Insert empty block after
-      let targetBlock2 = await logseq.Editor.insertBlock(targetBlock.uuid, '', {
-        before: false,
-        sibling: !parent,
-      });
+      const targetBlock2 = await logseq.Editor.insertBlock(
+        targetBlock.uuid,
+        '',
+        {
+          before: false,
+          sibling: !parent,
+        }
+      );
 
       // Set edit cursor to empty block
       await logseq.Editor.editBlock(targetBlock2.uuid);
@@ -38,18 +42,16 @@ const main = async () => {
   logseq.provideModel({
     async insertReflection() {
       // Get current page
-      let currentPage = await logseq.Editor.getCurrentPage();
+      const currentPage = await logseq.Editor.getCurrentPage();
       // Check currentPage so error message shows on homepage and check journal so error message shows on pages
       if (currentPage && currentPage['journal?'] == true) {
         // Get tree
-        let pageBlocksTree = await logseq.Editor.getCurrentPageBlocksTree();
-        let targetBlock = pageBlocksTree[0];
+        const pageBlocksTree = await logseq.Editor.getCurrentPageBlocksTree();
+        const targetBlock = pageBlocksTree[0];
 
         // Insert iframe
         insertCreighton(targetBlock, currentPage);
       } else {
-        console.log(currentPage);
-        console.log(await logseq.Editor.getCurrentBlock());
         // Display error message if trying to add reflection on non-Journal page
         logseq.App.showMsg(
           'This function is only available on a Journal page as the date is needed to pull the respective reflection.'
