@@ -30,11 +30,10 @@ const main = async () => {
         { isPageBlock: true }
       );
 
-      const targetBlock2 = await logseq.Editor.insertBatchBlock(
-        targetBlock.uuid,
-        batchBlkArr,
-        { before: false, sibling: false }
-      );
+      await logseq.Editor.insertBatchBlock(targetBlock.uuid, batchBlkArr, {
+        before: false,
+        sibling: false,
+      });
     } catch (e) {
       console.log(e);
     }
