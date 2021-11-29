@@ -45,7 +45,7 @@ const main = async () => {
       // Get current page
       const currentPage = await logseq.Editor.getCurrentPage();
       // Check currentPage so error message shows on homepage and check journal so error message shows on pages
-      if (currentPage && currentPage['journal?'] == true) {
+      if (currentPage && currentPage['journal?'] === true) {
         // Get tree
         const pageBlocksTree = await logseq.Editor.getCurrentPageBlocksTree();
         const targetBlock = pageBlocksTree[0];
