@@ -13,26 +13,28 @@ const main = async () => {
       strJournalDay.slice(-4) + strJournalDay.slice(2, 4) + '.html';
 
     try {
-      // Insert iFrame for Creighton
-      targetBlock = await logseq.Editor.insertBlock(
+      const batchBlkArr = [
+        {
+          content: `[[Creighton Daily Reflections]]
+        @@html: <iframe src="https://onlineministries.creighton.edu/CollaborativeMinistry/${creighDate}" height="500"></iframe>@@`,
+        },
+        { content: `` },
+        { content: `[[What am I grateful for]]` },
+        { content: `[[Prayer list]]` },
+        { content: `[[Brain dump]]` },
+      ];
+
+      const targetBlock = await logseq.Editor.insertBlock(
         currPage.name,
-        `[[Creighton Daily Reflections]]
-              @@html: <iframe src="https://onlineministries.creighton.edu/CollaborativeMinistry/${creighDate}" height="500"></iframe>@@`,
+        `[[MornRef ☀️]]`,
         { isPageBlock: true }
       );
 
-      // Insert empty block after
-      const targetBlock2 = await logseq.Editor.insertBlock(
+      const targetBlock2 = await logseq.Editor.insertBatchBlock(
         targetBlock.uuid,
-        '',
-        {
-          before: false,
-          sibling: !parent,
-        }
+        batchBlkArr,
+        { before: false, sibling: false }
       );
-
-      // Set edit cursor to empty block
-      await logseq.Editor.editBlock(targetBlock2.uuid);
     } catch (e) {
       console.log(e);
     }
