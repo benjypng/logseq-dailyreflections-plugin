@@ -25,7 +25,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel index.html",
-    "build": "parcel build --no-source-maps index.html --public-url ./"
+    "build": "rm -R dist && parcel build --no-source-maps index.html --public-url ./"
   },
   "dependencies": {
     "@logseq/libs": "^0.0.1-alpha.32"

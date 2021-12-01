@@ -8,32 +8,53 @@ const main = async () => {
     const currPage: any = currentPage;
 
     // Extract date from journal page in Creighton's format
-    const strJournalDay = currPage.journalDay.toString();
-    const creighDate =
-      strJournalDay.slice(-4) + strJournalDay.slice(2, 4) + '.html';
+    const todaysDate = () => {
+      const strJournalDay = currPage.journalDay.toString();
+      return strJournalDay.slice(-4) + strJournalDay.slice(2, 4);
+    };
 
     try {
+      // Set template array to be inserted
       const batchBlkArr = [
         {
           content: `[[Creighton Daily Reflections]]
-        @@html: <iframe src="https://onlineministries.creighton.edu/CollaborativeMinistry/${creighDate}" height="500"></iframe>@@`,
+        @@html: <iframe src="https://onlineministries.creighton.edu/CollaborativeMinistry/${todaysDate()}.html" height="500"></iframe>@@`,
         },
-        { content: `` },
         { content: `[[What am I grateful for]]` },
         { content: `[[Prayer list]]` },
         { content: `[[Brain dump]]` },
       ];
 
+      // Insert block for template array to be inserted under
       const targetBlock = await logseq.Editor.insertBlock(
         currPage.name,
         `[[MornRef ☀️]]`,
         { isPageBlock: true }
       );
 
+      // Insert template array
       await logseq.Editor.insertBatchBlock(targetBlock.uuid, batchBlkArr, {
         before: false,
         sibling: false,
       });
+
+      // Insert empty block under reflection block
+      const reflectionBlock = await logseq.Editor.getBlock(targetBlock.uuid, {
+        includeChildren: true,
+      });
+
+      // Insert empty block
+      const targetBlock2 = await logseq.Editor.insertBlock(
+        reflectionBlock.children[0]['uuid'],
+        '',
+        {
+          before: false,
+          sibling: false,
+        }
+      );
+
+      // Set edit cursor to empty block
+      await logseq.Editor.editBlock(targetBlock2.uuid);
     } catch (e) {
       console.log(e);
     }
