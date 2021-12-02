@@ -60,21 +60,34 @@ const main = async () => {
     }
   };
 
+  const getOrdinalNum = (n) => {
+    return (
+      n +
+      (n > 0
+        ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10]
+        : '')
+    );
+  };
+
+  const getDateForPage = () => {
+    const getYear = new Date().getFullYear();
+    const getMonth = new Date().toString().substring(4, 7);
+    const getDate = new Date().getDate();
+
+    return `${getMonth} ${getOrdinalNum(getDate)}, ${getYear}`;
+  };
+
   // Provide logseq model
   logseq.provideModel({
     async insertReflection() {
+      // Goto today's page
+      logseq.App.pushState('page', { name: getDateForPage() });
+
       // Get current page
-      const currentPage = await logseq.Editor.getCurrentPage();
-      // Check currentPage so error message shows on homepage and check journal so error message shows on pages
-      if (currentPage && currentPage['journal?'] === true) {
-        // Insert iframe
-        insertCreighton(currentPage);
-      } else {
-        // Display error message if trying to add reflection on non-Journal page
-        logseq.App.showMsg(
-          'This function is only available on a Journal page as the date is needed to pull the respective reflection.'
-        );
-      }
+      const currPage = await logseq.Editor.getCurrentPage();
+
+      // Insert iframe
+      insertCreighton(currPage);
     },
   });
 
