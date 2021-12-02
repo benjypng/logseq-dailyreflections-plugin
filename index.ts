@@ -4,7 +4,7 @@ const main = async () => {
   console.log('Creighton Daily Reflections Plugin loaded');
 
   // Function to insert Creighton Block, and edit block after
-  const insertCreighton = async (targetBlock: any, currentPage: object) => {
+  const insertCreighton = async (currentPage: object) => {
     const currPage: any = currentPage;
 
     // Extract date from journal page in Creighton's format
@@ -67,12 +67,8 @@ const main = async () => {
       const currentPage = await logseq.Editor.getCurrentPage();
       // Check currentPage so error message shows on homepage and check journal so error message shows on pages
       if (currentPage && currentPage['journal?'] === true) {
-        // Get tree
-        const pageBlocksTree = await logseq.Editor.getCurrentPageBlocksTree();
-        const targetBlock = pageBlocksTree[0];
-
         // Insert iframe
-        insertCreighton(targetBlock, currentPage);
+        insertCreighton(currentPage);
       } else {
         // Display error message if trying to add reflection on non-Journal page
         logseq.App.showMsg(
