@@ -77,19 +77,35 @@ const main = async () => {
     return `${getMonth} ${getOrdinalNum(getDate)}, ${getYear}`;
   };
 
+  const insertReflection = async () => {
+    // Goto today's page
+    logseq.App.pushState('page', { name: getDateForPage() });
+
+    // Get current page
+    const currPage = await logseq.Editor.getCurrentPage();
+
+    // Insert iframe
+    insertCreighton(currPage);
+  };
+
   // Provide logseq model
   logseq.provideModel({
-    async insertReflection() {
-      // Goto today's page
-      logseq.App.pushState('page', { name: getDateForPage() });
-
-      // Get current page
-      const currPage = await logseq.Editor.getCurrentPage();
-
-      // Insert iframe
-      insertCreighton(currPage);
-    },
+    insertReflection,
   });
+
+  // register keyboard
+  logseq.App.registerCommandPalette(
+    {
+      key: 'logseq-dailyreflections-plugin',
+      label: 'Execute daily reflections',
+      keybinding: {
+        binding: 'd r',
+      },
+    },
+    () => {
+      insertReflection();
+    }
+  );
 
   // Register UI
   logseq.App.registerUIItem('toolbar', {
