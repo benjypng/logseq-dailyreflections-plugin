@@ -18,7 +18,7 @@ const main = async () => {
       const batchBlkArr = [
         {
           content: `[[Creighton Daily Reflections]]
-        @@html: <iframe src="https://onlineministries.creighton.edu/CollaborativeMinistry/${todaysDate()}.html" height="500"></iframe>@@`,
+@@html: <iframe src="https://onlineministries.creighton.edu/CollaborativeMinistry/${todaysDate()}.html" height="500"></iframe>@@`,
         },
         { content: `[[What am I grateful for]]` },
         { content: `[[Prayer list]]` },
