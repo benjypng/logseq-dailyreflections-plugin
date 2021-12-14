@@ -113,7 +113,7 @@ const main = async () => {
     template: `
       <a data-on-click="insertReflection"
         class="button">
-        <i class="ti ti-medical-cross"></i>
+        <i class="ti ti-cross"></i>
       </a>
 `,
   });

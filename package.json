@@ -4,7 +4,8 @@
   "effect": "false",
   "logseq": {
     "id": "logseq-dailyreflections-plugin",
-    "title": "logseq-dailyreflections-plugin"
+    "title": "logseq-dailyreflections-plugin",
+    "icon": "./icon.svg"
   },
   "main": "dist/index.html",
   "targets": {
