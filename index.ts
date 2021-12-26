@@ -46,6 +46,16 @@ const main = async () => {
       // Insert empty block
       const targetBlock2 = await logseq.Editor.insertBlock(
         reflectionBlock.children[0]['uuid'],
+        '{{renderer :wordcount_dailyreflections}}',
+        {
+          before: false,
+          sibling: false,
+        }
+      );
+
+      // Insert empty block
+      const wordcountBlock = await logseq.Editor.insertBlock(
+        targetBlock2.uuid,
         '',
         {
           before: false,
@@ -54,7 +64,7 @@ const main = async () => {
       );
 
       // Set edit cursor to empty block
-      await logseq.Editor.editBlock(targetBlock2.uuid);
+      await logseq.Editor.editBlock(wordcountBlock.uuid);
     } catch (e) {
       console.log(e);
     }
