@@ -26,10 +26,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel index.html",
-    "build": "rm -R dist && parcel build --no-source-maps index.html --public-url ./"
+    "build": "parcel build --no-source-maps index.html --public-url ./"
   },
   "dependencies": {
-    "@logseq/libs": "^0.0.1-alpha.32"
+    "@logseq/libs": "^0.0.1-alpha.35",
+    "axios": "^0.26.0",
+    "html-to-text": "^8.1.0"
   },
   "devDependencies": {
     "parcel": "^2.0.1",

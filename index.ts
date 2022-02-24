@@ -1,4 +1,18 @@
 import '@logseq/libs';
+import axios from 'axios';
+import { convert } from 'html-to-text';
+
+const parseText = async (todaysDate: Function) => {
+  const response = await axios.get(
+    `https://onlineministries.creighton.edu/CollaborativeMinistry/${todaysDate()}.html`
+  );
+  const text = convert(response.data, {
+    baseElements: { selectors: ['td.Reflection-text'] },
+    wordwrap: false,
+  });
+
+  return text;
+};
 
 const main = async () => {
   console.log('Creighton Daily Reflections Plugin loaded');
@@ -18,7 +32,7 @@ const main = async () => {
       const batchBlkArr = [
         {
           content: `[[Creighton Daily Reflections]]
-@@html: <iframe src="https://onlineministries.creighton.edu/CollaborativeMinistry/${todaysDate()}.html" height="500"></iframe>@@`,
+    ${await parseText(() => todaysDate())}`,
         },
         { content: `[[What am I grateful for]]` },
         { content: `[[Prayer list]]` },
@@ -70,7 +84,7 @@ const main = async () => {
     }
   };
 
-  const getOrdinalNum = (n) => {
+  const getOrdinalNum = (n: number) => {
     return (
       n +
       (n > 0
