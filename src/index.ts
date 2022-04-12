@@ -1,13 +1,13 @@
-import '@logseq/libs';
-import axios from 'axios';
-import { convert } from 'html-to-text';
+import "@logseq/libs";
+import axios from "axios";
+import { convert } from "html-to-text";
 
 const parseText = async (todaysDate: Function) => {
   const response = await axios.get(
     `https://onlineministries.creighton.edu/CollaborativeMinistry/${todaysDate()}.html`
   );
   const text = convert(response.data, {
-    baseElements: { selectors: ['td.Reflection-text'] },
+    baseElements: { selectors: ["td.Reflection-text"] },
     wordwrap: false,
   });
 
@@ -15,7 +15,7 @@ const parseText = async (todaysDate: Function) => {
 };
 
 const main = async () => {
-  console.log('Creighton Daily Reflections Plugin loaded');
+  console.log("Creighton Daily Reflections Plugin loaded");
 
   // Function to insert Creighton Block, and edit block after
   const insertCreighton = async (currentPage: object) => {
@@ -59,8 +59,8 @@ const main = async () => {
 
       // Insert empty block
       const targetBlock2 = await logseq.Editor.insertBlock(
-        reflectionBlock.children[0]['uuid'],
-        '{{renderer :wordcount_dailyreflections}}',
+        reflectionBlock.children[0]["uuid"],
+        "{{renderer :wordcount_dailyreflections}}",
         {
           before: false,
           sibling: false,
@@ -70,7 +70,7 @@ const main = async () => {
       // Insert empty block
       const wordcountBlock = await logseq.Editor.insertBlock(
         targetBlock2.uuid,
-        '',
+        "",
         {
           before: false,
           sibling: false,
@@ -88,8 +88,8 @@ const main = async () => {
     return (
       n +
       (n > 0
-        ? ['th', 'st', 'nd', 'rd'][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10]
-        : '')
+        ? ["th", "st", "nd", "rd"][(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10]
+        : "")
     );
   };
 
@@ -103,7 +103,7 @@ const main = async () => {
 
   const insertReflection = async () => {
     // Goto today's page
-    logseq.App.pushState('page', { name: getDateForPage() });
+    logseq.App.pushState("page", { name: getDateForPage() });
 
     // Get current page
     const currPage = await logseq.Editor.getCurrentPage();
@@ -120,10 +120,10 @@ const main = async () => {
   // register keyboard
   logseq.App.registerCommandPalette(
     {
-      key: 'logseq-dailyreflections-plugin',
-      label: 'Execute daily reflections',
+      key: "logseq-dailyreflections-plugin",
+      label: "Execute daily reflections",
       keybinding: {
-        binding: 'd r',
+        binding: "d r",
       },
     },
     () => {
@@ -132,8 +132,8 @@ const main = async () => {
   );
 
   // Register UI
-  logseq.App.registerUIItem('toolbar', {
-    key: 'logseq-dailyreflections-plugin',
+  logseq.App.registerUIItem("toolbar", {
+    key: "logseq-dailyreflections-plugin",
     template: `
       <a data-on-click="insertReflection"
         class="button">
