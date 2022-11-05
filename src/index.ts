@@ -34,10 +34,7 @@ const main = async () => {
   });
 
   logseq.App.onMacroRendererSlotted(async function ({ slot, payload }) {
-    const uuid = payload.uuid;
     const [type] = payload.arguments;
-    const id = type.split("_")[1]?.trim();
-    const reflectionId = `dailyreflections_${id}`;
     if (!type.startsWith(":dailyreflections_")) return;
 
     // Goto today's page
