@@ -34,6 +34,7 @@ const main = async () => {
   });
 
   logseq.App.onMacroRendererSlotted(async function ({ slot, payload }) {
+    const uuid = payload.uuid;
     const [type] = payload.arguments;
     if (!type.startsWith(":dailyreflections_")) return;
 
@@ -45,12 +46,8 @@ const main = async () => {
       ),
     });
 
-    // Get current page
-    const currentPage: PageEntity =
-      (await logseq.Editor.getCurrentPage()) as PageEntity;
-
     // Insert iframe
-    insertCreighton(currentPage);
+    insertCreighton(uuid);
   });
 };
 

@@ -1,7 +1,7 @@
-import { PageEntity } from "@logseq/libs/dist/LSPlugin.user";
+import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user";
 import { parseText } from "./utils";
 
-export async function insertCreighton(currentPage: PageEntity) {
+export async function insertCreighton(rendererBlock: BlockUUID) {
   // Set template array to be inserted
   //const reflectionBatchBlk = [
   // { content: `What resonates with me from today's reading?` },
@@ -14,15 +14,11 @@ export async function insertCreighton(currentPage: PageEntity) {
   //];
 
   // Insert block for template array to be inserted under
-  const mornRefBlock = await logseq.Editor.insertBlock(
-    currentPage.name,
-    `[[MornRef ☀️]]`,
-    { isPageBlock: true }
-  );
+  await logseq.Editor.updateBlock(rendererBlock, `[[MornRef ☀️]]`);
 
   // Insert Reflections
   const creightonBlk = await logseq.Editor.insertBlock(
-    mornRefBlock!.uuid,
+    rendererBlock,
     `[[Creighton Daily Reflections]]
 ${await parseText()}`,
     {
