@@ -42,6 +42,12 @@ ${await parseText()}`,
     sibling: false,
   });
 
+  // Insert habit-tracker
+  await logseq.Editor.insertBlock(wordCountBlk!.uuid, "TODO write daily", {
+    before: false,
+    sibling: true,
+  });
+
   // Set edit cursor to empty block
   await logseq.Editor.editBlock(editBlock!.uuid);
 }
