@@ -1,5 +1,5 @@
 import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user";
-import { parseText } from "./utils";
+import { generateUniqueId, parseText } from "./utils";
 
 export async function insertCreighton(rendererBlock: BlockUUID) {
   await logseq.Editor.updateBlock(rendererBlock, `[[MornRef ☀️]]`);
@@ -17,7 +17,7 @@ ${await parseText()}`,
 
   const wordCountBlk = await logseq.Editor.insertBlock(
     creightonBlk!.uuid,
-    "[[My Reflections]] {{renderer :wordcount_dailyreflections}}",
+    `[[My Reflections]] {{renderer :wordcount_${generateUniqueId()}}}`,
     {
       before: false,
       sibling: true,

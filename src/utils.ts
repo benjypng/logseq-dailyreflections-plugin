@@ -23,3 +23,10 @@ export async function parseText() {
 
   return text;
 }
+
+export function generateUniqueId() {
+  const id: string = Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, "");
+  return id;
+}
