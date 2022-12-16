@@ -2,18 +2,6 @@ import { BlockUUID } from "@logseq/libs/dist/LSPlugin.user";
 import { parseText } from "./utils";
 
 export async function insertCreighton(rendererBlock: BlockUUID) {
-  // Set template array to be inserted
-  //const reflectionBatchBlk = [
-  // { content: `What resonates with me from today's reading?` },
-  // { content: `What do I have to be grateful for?` },
-  // {
-  //   content:
-  //     "What happened in the past day? What thoughts, words and actions did I have?",
-  // },
-  // { content: "Who do I have to pray for?" },
-  //];
-
-  // Insert block for template array to be inserted under
   await logseq.Editor.updateBlock(rendererBlock, `[[MornRef ☀️]]`);
 
   // Insert Reflections

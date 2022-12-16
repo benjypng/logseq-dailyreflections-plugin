@@ -8,7 +8,7 @@ export async function preferredDateFormat() {
 
 async function getCreightonDate() {
   const currPage = await logseq.Editor.getCurrentPage();
-  const strJournalDay = currPage.journalDay.toString();
+  const strJournalDay = currPage!.journalDay.toString();
   return strJournalDay.slice(-4) + strJournalDay.slice(2, 4);
 }
 
