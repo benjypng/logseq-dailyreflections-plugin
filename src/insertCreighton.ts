@@ -6,12 +6,12 @@ export async function insertCreighton(rendererBlock: BlockUUID) {
 
   // Insert Reflections
   //const creightonBlk =
-  const blk = await logseq.Editor.updateBlock(
+  await logseq.Editor.updateBlock(
     rendererBlock,
     `[[Creighton Daily Reflections]]`
   );
 
-  await logseq.Editor.insertBlock(blk.uuid, `${await parseText()}`, {
+  await logseq.Editor.insertBlock(rendererBlock, `${await parseText()}`, {
     sibling: false,
     before: false,
   });
