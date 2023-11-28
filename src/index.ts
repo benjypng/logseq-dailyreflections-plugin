@@ -9,13 +9,13 @@ const main = async () => {
   logseq.App.onMacroRendererSlotted(async function ({ payload }) {
     const uuid = payload.uuid;
     const [type] = payload.arguments;
-    if (!type.startsWith(":dailyreflections_")) return;
+    if (!type || !type.startsWith(":dailyreflections_")) return;
 
     // Goto today's page
     logseq.App.pushState("page", {
       name: getDateForPageWithoutBrackets(
         new Date(),
-        await preferredDateFormat()
+        await preferredDateFormat(),
       ),
     });
 

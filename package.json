@@ -1,43 +1,57 @@
 {
   "name": "logseq-dailyreflections-plugin",
-  "version": "3.2.5",
-  "effect": "false",
+  "author": "hkgnp",
+  "description": "# Daily Reflections Plugin for Logseq (based on Creighton University's Daily Reflections)",
+  "license": "MIT",
   "logseq": {
     "id": "logseq-dailyreflections-plugin",
     "title": "logseq-dailyreflections-plugin",
-    "icon": "./icon.svg"
+    "icon": "./icon.svg",
+    "main": "dist/index.html"
   },
-  "main": "dist/index.html",
-  "targets": {
-    "main": false
-  },
-  "default": "dist/index.html",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hkgnp/logseq-dailyreflections-plugin.git"
-  },
-  "author": "hkgnp",
-  "license": "MIT",
-  "description": "# Daily Reflections Plugin for Logseq (based on Creighton University's Daily Reflections)",
-  "bugs": {
-    "url": "https://github.com/hkgnp/logseq-dailyreflections-plugin/issues"
-  },
-  "homepage": "https://github.com/hkgnp/logseq-dailyreflections-plugin#readme",
   "scripts": {
-    "build": "rm -R dist && echo 'dist folder removed'; parcel build --no-source-maps src/index.html --public-url ./"
+    "dev:start": "pnpm add @logseq/libs -S && pnpm add @types/eslint @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier prettier vite vite-plugin-logseq vite-tsconfig-paths typescript -D",
+    "dev:tailwind": "pnpm add tailwindcss cssnano autoprefixer -D && touch tailwind.config.js && touch .postcssrc.cjs && touch src/tailwind.css",
+    "dev": "npx vite",
+    "build": "npx tsc && npx vite build",
+    "preview": "npx vite preview"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            "logseq-dailyreflections-plugin.zip"
+          ]
+        }
+      ]
+    ]
   },
   "dependencies": {
-    "@logseq/libs": "^0.0.10",
+    "@logseq/libs": "^0.0.15",
     "axios": "^1.1.3",
     "html-to-text": "^8.2.1",
-    "logseq-dateutils": "^0.0.22"
+    "logseq-dateutils": "^0.0.26"
   },
   "devDependencies": {
     "@types/html-to-text": "^8.1.1",
-    "@types/node": "^18.11.9",
-    "buffer": "^6.0.3",
-    "parcel": "^2.7.0",
-    "typescript": "^4.8.4",
-    "vite": "^3.2.2"
+    "@types/eslint": "^8.44.3",
+    "@types/node": "^20.8.0",
+    "@types/react": "^18.0.32",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "vite-plugin-logseq": "^1.1.2",
+    "vite-tsconfig-paths": "^4.2.1"
   }
 }
