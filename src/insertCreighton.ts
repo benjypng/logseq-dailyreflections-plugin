@@ -3,10 +3,7 @@ import { getGospel, parseText } from "./utils";
 
 export async function insertCreighton(rendererBlock: BlockUUID) {
   // Insert Reflections
-  await logseq.Editor.updateBlock(
-    rendererBlock,
-    `[[Creighton Daily Reflections]]`,
-  );
+  await logseq.Editor.updateBlock(rendererBlock, `[[Daily Reflections]]`);
 
   await logseq.Editor.insertBlock(rendererBlock, `${await getGospel()}`, {
     sibling: false,
