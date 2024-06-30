@@ -1,27 +1,34 @@
-import "@logseq/libs";
-import { preferredDateFormat } from "./utils";
-import { getDateForPageWithoutBrackets } from "logseq-dateutils";
-import { insertCreighton } from "./insertCreighton";
+import '@logseq/libs'
+
+import { getDateForPageWithoutBrackets } from 'logseq-dateutils'
+
+import { handleReflections } from './handle-reflections'
+import { settings } from './settings'
+
+const preferredDateFormat = async () => {
+  const userSettings = await logseq.App.getUserConfigs()
+  return userSettings.preferredDateFormat
+}
 
 const main = async () => {
-  console.log("Creighton Daily Reflections Plugin loaded");
+  console.log('Creighton Daily Reflections Plugin loaded')
 
   logseq.App.onMacroRendererSlotted(async function ({ payload }) {
-    const uuid = payload.uuid;
-    const [type] = payload.arguments;
-    if (!type || !type.startsWith(":dailyreflections_")) return;
+    const uuid = payload.uuid
+    const [type] = payload.arguments
+    // Assumes that a template was used to created {{renderer :dailyreflections_}}
+    if (!type || !type.startsWith(':dailyreflections_')) return
 
     // Goto today's page
-    logseq.App.pushState("page", {
+    logseq.App.pushState('page', {
       name: getDateForPageWithoutBrackets(
         new Date(),
         await preferredDateFormat(),
       ),
-    });
+    })
 
-    // Insert iframe
-    insertCreighton(uuid);
-  });
-};
+    handleReflections(uuid)
+  })
+}
 
-logseq.ready(main).catch(console.error);
+logseq.useSettingsSchema(settings).ready(main).catch(console.error)
