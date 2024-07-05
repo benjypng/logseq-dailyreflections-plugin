@@ -27,7 +27,7 @@ const main = async () => {
       ),
     })
 
-    handleReflections(uuid)
+    await handleReflections(uuid)
   })
 }
 

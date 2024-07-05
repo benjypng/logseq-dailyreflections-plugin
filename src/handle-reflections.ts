@@ -7,6 +7,17 @@ import { getCreighton } from './libs/get-creighton'
 import { getGospel } from './libs/get-gospel'
 import { writeToLogseq } from './write-to-logseq'
 
+export type Creighton = {
+  url: string
+  reflections: string
+} | null
+
+export type Gospel = {
+  url: string
+  reading: string
+  passage: string
+} | null
+
 export const handleReflections = async (uuid: BlockUUID) => {
   console.log('Getting Reflections')
 
@@ -14,25 +25,26 @@ export const handleReflections = async (uuid: BlockUUID) => {
   dayjs.extend(timezone)
   const date = dayjs().tz('Asia/Singapore')
 
-  let creighton = { url: '', reflections: '' }
-  let gospel = { url: '', reading: '', passage: '' }
+  let creighton: Creighton = { url: '', reflections: '' }
+  let gospel: Gospel = { url: '', reading: '', passage: '' }
 
-  try {
-    const response = await getCreighton(date)
-    if (response) creighton = response
-  } catch (error) {
-    await logseq.UI.showMsg(`Error getting Creighton reflections`, 'error')
-    console.error(error)
+  const response = await getCreighton(date)
+  if (response) {
+    creighton = response
+  } else {
+    creighton = null
   }
 
+  // TODO: Move the try into its function
   try {
     const response = await getGospel(date)
     if (response) gospel = response
   } catch (error) {
+    gospel = null
     await logseq.UI.showMsg('Error getting Gospel reflections', 'error')
     console.error(error)
   }
 
   // Then write to Logseq
-  writeToLogseq(uuid, creighton, gospel)
+  await writeToLogseq(uuid, creighton, gospel)
 }

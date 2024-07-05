@@ -11,11 +11,30 @@ export const getCreighton = async (
   const url = `https://onlineministries.creighton.edu/CollaborativeMinistry/${dayjs(
     date,
   ).format('MMDDYY')}.html`
+  const retryUrl = `https://onlineministries.creighton.edu/CollaborativeMinistry/${dayjs(
+    date,
+  ).format('MMDDYY')}.htm`
 
-  const response = await axios.get(url)
-  const reflections = convert(response.data, {
-    baseElements: { selectors: ['td.Reflection-text'] },
-    wordwrap: false,
-  })
-  return { url, reflections }
+  try {
+    const response = await axios.get(url)
+    const reflections = convert(response.data, {
+      baseElements: { selectors: ['td.Reflection-text'] },
+      wordwrap: false,
+    })
+    return { url, reflections }
+  } catch (error) {
+    try {
+      const response = await axios.get(retryUrl)
+      const reflections = convert(response.data, {
+        baseElements: { selectors: ['td.Reflection-text'] },
+        wordwrap: false,
+      })
+      return { url: retryUrl, reflections }
+    } catch (error) {
+      // Handle the error if both attempts fail
+      await logseq.UI.showMsg(`Error getting Creighton reflections`, 'error')
+      console.error(error)
+      return
+    }
+  }
 }
