@@ -19,6 +19,10 @@ const main = async () => {
     // Assumes that a template was used to created {{renderer :dailyreflections_}}
     if (!type || !type.startsWith(':dailyreflections_')) return
 
+    console.log(
+      getDateForPageWithoutBrackets(new Date(), await preferredDateFormat()),
+    )
+
     // Goto today's page
     logseq.App.pushState('page', {
       name: getDateForPageWithoutBrackets(
