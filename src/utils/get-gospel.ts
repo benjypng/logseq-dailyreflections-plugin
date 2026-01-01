@@ -1,23 +1,13 @@
 import axios from 'axios'
-import dayjs, { Dayjs } from 'dayjs'
+import { format } from 'date-fns'
 
-interface UJson {
-  heading: string
-  source: string
-  text: string
-}
+import { Gospel, UJson } from '../interfaces'
 
-// Get Gospel in a string
-export const getGospel = async (
-  date: Dayjs,
-): Promise<{
-  url: string
-  reading: string
-  passage: string
-} | void> => {
-  // https://www.universalis.com/20240519/jsonpmass.js
-  const url = `https://www.universalis.com/${dayjs(date).format(
-    'YYYYMMDD',
+// https://www.universalis.com/20240519/jsonpmass.js
+export const getGospel = async (date: Date): Promise<Gospel> => {
+  const url = `https://www.universalis.com/${format(
+    date,
+    'yyyyMMdd',
   )}/jsonpmass.js`
 
   const response = await axios.get(url)

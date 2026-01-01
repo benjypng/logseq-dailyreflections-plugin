@@ -1,30 +1,24 @@
 import '@logseq/libs'
 
-import { handleReflections } from './handle-reflections'
 import { settings } from './settings'
-import { getDateForPageWithoutBrackets } from 'logseq-dateutils'
+import { handleReflections } from './utils/handle-reflections'
 
 const main = async () => {
-  console.log('Creighton Daily Reflections Plugin loaded')
+  logseq.UI.showMsg('logseq-dailyreflections-plugin loaded')
 
-  logseq.provideModel({
-    async insertReflection() {
-      const { preferredDateFormat } = await logseq.App.getUserConfigs()
-      const todayPageName = getDateForPageWithoutBrackets(
-        new Date(),
-        preferredDateFormat,
-      )
-      const blk = await logseq.Editor.appendBlockInPage(todayPageName, '')
-      if (blk) {
-        await handleReflections(blk.uuid)
-      }
-    },
-  })
-
-  logseq.App.registerUIItem('toolbar', {
-    key: 'logseq-dailyreflections-plugin',
-    template: `<a class="button datenlp-toolbar" data-on-click="insertReflection"><i class="ti ti-cross"></i></a>`,
-  })
+  const gospelReflectionTag = await logseq.Editor.getTag('GospelReflection')
+  if (!gospelReflectionTag) {
+    const tag = await logseq.Editor.createTag('GospelReflection')
+    const prop = await logseq.Editor.upsertProperty('gospel-url', {
+      type: 'url',
+      cardinality: 'one',
+      hide: false,
+      public: false,
+    })
+    const propBlock = await logseq.Editor.getBlock(prop.id)
+    if (!tag || !propBlock) return
+    await logseq.Editor.addTagProperty(tag.uuid, propBlock.uuid)
+  }
 
   logseq.App.onMacroRendererSlotted(async function ({ payload }) {
     const uuid = payload.uuid
