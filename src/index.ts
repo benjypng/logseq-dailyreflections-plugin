@@ -40,7 +40,10 @@ const main = async () => {
     )
   } catch (error) {
     console.error(error)
-    logseq.UI.showMsg('Unable to create necessary tag and prop', 'error')
+    logseq.UI.showMsg(
+      'logseq-dailyreflections-plugin: Unable to create necessary tag and prop',
+      'error',
+    )
   }
 
   logseq.App.onMacroRendererSlotted(async function ({ payload }) {
