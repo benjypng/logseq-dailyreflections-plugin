@@ -1,25 +1,46 @@
 import '@logseq/libs'
 
+import { PageEntity } from '@logseq/libs/dist/LSPlugin.user'
+
 import { settings } from './settings'
 import { handleReflections } from './utils/handle-reflections'
 
 const main = async () => {
   logseq.UI.showMsg('logseq-dailyreflections-plugin loaded')
 
-  const gospelUrlProp = await logseq.Editor.getPage('gospel-url')
-  if (!gospelUrlProp) {
-    const gospelReflectionTag =
-      await logseq.Editor.createTag('GospelReflection')
-    if (!gospelReflectionTag) return
-    const gospelUrlProperty = await logseq.Editor.upsertProperty('gospel-url', {
+  const getCreateUrlProp = async () => {
+    const page = await logseq.Editor.getPage('gospel-url')
+    if (page) return page
+
+    return (await logseq.Editor.upsertProperty('gospel-url', {
       type: 'default',
       cardinality: 'one',
-    })
-    if (!gospelUrlProperty) return
+    })) as PageEntity
+  }
+
+  const getCreateReflectionTag = async () => {
+    const page = await logseq.Editor.getPage('GospelReflection')
+    if (page) return page
+    return await logseq.Editor.createTag('GospelReflection')
+  }
+
+  try {
+    const [gospelUrlProp, gospelReflectionTag] = await Promise.all([
+      getCreateUrlProp(),
+      getCreateReflectionTag(),
+    ])
+
+    if (!gospelUrlProp || !gospelReflectionTag) {
+      throw new Error('Entity creation failed')
+    }
+
     await logseq.Editor.addTagProperty(
       gospelReflectionTag.uuid,
-      gospelUrlProperty.uuid,
+      gospelUrlProp.uuid,
     )
+  } catch (error) {
+    console.error(error)
+    logseq.UI.showMsg('Unable to create necessary tag and prop', 'error')
   }
 
   logseq.App.onMacroRendererSlotted(async function ({ payload }) {
