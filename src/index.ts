@@ -14,7 +14,7 @@ const main = async () => {
       const page = await logseq.Editor.getPage('gospel-url')
       if (page) return page
       return (await logseq.Editor.upsertProperty('gospel-url', {
-        type: 'default',
+        type: 'url',
         cardinality: 'one',
       })) as PageEntity
     }

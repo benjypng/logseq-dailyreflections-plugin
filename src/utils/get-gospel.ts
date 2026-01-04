@@ -4,11 +4,10 @@ import { format } from 'date-fns'
 import { Gospel, UJson } from '../interfaces'
 
 // https://www.universalis.com/20240519/jsonpmass.js
-export const getGospel = async (date: Date): Promise<Gospel> => {
-  const url = `https://www.universalis.com/${format(
-    date,
-    'yyyyMMdd',
-  )}/jsonpmass.js`
+export const getGospel = async (date: Date | number): Promise<Gospel> => {
+  const gospelDate = Number.isNaN(date) ? format(date, 'yyyyMMdd') : date
+
+  const url = `https://www.universalis.com/${gospelDate}/jsonpmass.js`
 
   const response = await axios.get(url)
   let { data } = response
