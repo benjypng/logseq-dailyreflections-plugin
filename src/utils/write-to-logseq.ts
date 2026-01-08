@@ -1,11 +1,12 @@
-import { BlockUUID } from '@logseq/libs/dist/LSPlugin.user'
-
 import { Gospel } from '../interfaces'
 
-export const writeToLogseq = async (uuid: BlockUUID, gospel: Gospel) => {
+export const writeToLogseq = async (pageTitle: string, gospel: Gospel) => {
   const { url, reading, passage } = gospel
-  // Update renderer block with header block
-  await logseq.Editor.updateBlock(uuid, reading)
+  const block = await logseq.Editor.appendBlockInPage(pageTitle, reading)
+  if (!block) {
+    logseq.UI.showMsg('Unable to create reflections block', 'error')
+    return
+  }
 
   const gospelReflectionTag = await logseq.Editor.getPage('gospelreflection')
   if (!gospelReflectionTag) {
@@ -20,12 +21,12 @@ export const writeToLogseq = async (uuid: BlockUUID, gospel: Gospel) => {
   }
   const gospelUrlPropIdent = gospelUrlProp.ident
 
-  await logseq.Editor.addBlockTag(uuid, gospelReflectionTag.uuid)
+  await logseq.Editor.addBlockTag(block.uuid, gospelReflectionTag.uuid)
 
-  await logseq.Editor.upsertBlockProperty(uuid, gospelUrlPropIdent, url)
+  await logseq.Editor.upsertBlockProperty(block.uuid, gospelUrlPropIdent, url)
 
   // Insert Gospel
-  await logseq.Editor.insertBlock(uuid, passage, {
+  await logseq.Editor.insertBlock(block.uuid, passage, {
     sibling: false,
   })
 }

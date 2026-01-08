@@ -42,12 +42,8 @@ const main = async () => {
   //  }
   //}, 1000)
 
-  logseq.App.onMacroRendererSlotted(async function ({ payload }) {
-    const uuid = payload.uuid
-    const [type] = payload.arguments
-    // Assumes that a template was used to created {{renderer :dailyreflections_}}
-    if (!type || !type.startsWith(':dailyreflections_')) return
-    await handleReflections(uuid)
+  logseq.App.onTodayJournalCreated(async ({ title }) => {
+    await handleReflections(title)
   })
 }
 
