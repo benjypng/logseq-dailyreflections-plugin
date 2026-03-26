@@ -1,5 +1,7 @@
 import '@logseq/libs'
 
+import { format } from 'date-fns'
+
 import { settings } from './settings'
 import { handleReflections } from './utils/handle-reflections'
 
@@ -44,6 +46,18 @@ const main = async () => {
 
   logseq.App.onTodayJournalCreated(async ({ title }) => {
     await handleReflections(title)
+  })
+
+  logseq.App.registerUIItem('toolbar', {
+    key: 'logseq-dailyreflections-plugin',
+    template: `<a class="button" data-on-click="insertReflection"><i class="ti ti-pray"></i></a>`,
+  })
+
+  logseq.provideModel({
+    async insertReflection() {
+      const title = format(new Date(), 'MMM do, yyyy')
+      await handleReflections(title)
+    },
   })
 }
 
